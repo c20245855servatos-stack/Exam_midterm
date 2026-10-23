@@ -1,6 +1,7 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style type="text/tailwindcss">
@@ -17,250 +17,508 @@
 
         @theme {
             --color-brand: #facc15;
-            --color-ink: #111111;
+            --color-ink: #171717;
         }
+    </style>
 
+    <style>
         html {
             scroll-behavior: smooth;
+            scroll-padding-top: 90px;
         }
 
         body {
-            @apply bg-brand text-ink transition-colors duration-300;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
-        .dark body {
-            @apply bg-ink text-brand;
+        .brand-yellow {
+            background-color: #facc15;
         }
 
-        .card {
-            @apply border-2 border-ink bg-white p-6 text-ink;
-            box-shadow: 5px 5px 0 #111111;
+        .brand-text {
+            color: #ca8a04;
         }
 
-        .dark .card {
-            @apply border-brand bg-neutral-900 text-brand;
-            box-shadow: 5px 5px 0 #facc15;
+        .dark .brand-text {
+            color: #facc15;
         }
 
-        .btn {
-            @apply inline-flex items-center gap-2 border-2 border-ink bg-ink px-5 py-3 font-bold text-brand;
+        .hard-shadow {
+            box-shadow: 6px 6px 0 #171717;
         }
 
-        .dark .btn {
-            @apply border-brand bg-brand text-ink;
+        .dark .hard-shadow {
+            box-shadow: 6px 6px 0 #facc15;
+        }
+
+        .product-card,
+        .service-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .product-card:hover,
+        .service-card:hover {
+            transform: translate(-3px, -3px);
+            box-shadow: 8px 8px 0 #facc15;
         }
 
         .reveal {
-            opacity: 0;
-            transform: translateY(25px);
+            will-change: transform, opacity;
+        }
+
+        button,
+        a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
         }
     </style>
 </head>
 
-<body class="font-sans">
+<body class="bg-white text-neutral-900 transition-colors duration-300 dark:bg-neutral-950 dark:text-white">
 
-    <header class="sticky top-0 z-50 border-b-2 border-ink bg-brand dark:border-brand dark:bg-ink">
-        <nav class="mx-auto flex max-w-5xl items-center justify-between p-5">
-            <a href="#home" class="text-2xl font-black">KWKC<span class="text-white">.</span></a>
+    <header class="sticky top-0 z-50 border-b-4 border-neutral-900 bg-yellow-400 dark:border-yellow-400 dark:bg-neutral-950">
+        <nav class="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
 
-            <div class="hidden items-center gap-5 font-bold md:flex">
-                <a href="#home">Home</a>
-                <a href="#about">About</a>
-                <a href="#products">Products</a>
-                <a href="#services">Services</a>
-                <a href="#contact">Contact</a>
+            <a href="#home" class="flex items-center gap-3">
+                <div class="flex h-11 w-11 items-center justify-center border-2 border-black bg-black text-yellow-400">
+                    <i data-lucide="hammer" class="h-6 w-6"></i>
+                </div>
+
+                <div>
+                    <h1 class="text-xl font-black uppercase tracking-tight text-black dark:text-white">
+                        KWKC Hardware
+                    </h1>
+                    <p class="text-xs font-bold uppercase tracking-widest text-neutral-800 dark:text-neutral-400">
+                        Tools for every project
+                    </p>
+                </div>
+            </a>
+
+            <div class="hidden items-center gap-6 font-bold md:flex">
+                <a href="#home" class="transition hover:underline">Home</a>
+                <a href="#about" class="transition hover:underline">About</a>
+                <a href="#products" class="transition hover:underline">Products</a>
+                <a href="#services" class="transition hover:underline">Services</a>
+                <a href="#contact" class="transition hover:underline">Contact</a>
             </div>
 
-            <div class="flex items-center gap-3">
-                <button id="themeButton" class="border-2 border-ink p-2 dark:border-brand" aria-label="Toggle dark mode">
-                    <i data-lucide="moon"></i>
+            <div class="flex items-center gap-2">
+                <button id="themeButton" type="button" aria-label="Switch theme"
+                    class="flex h-10 w-10 items-center justify-center border-2 border-black bg-white text-black transition hover:bg-neutral-200 dark:border-yellow-400 dark:bg-neutral-900 dark:text-yellow-400">
+                    <i data-lucide="sun" class="h-5 w-5"></i>
                 </button>
 
-                <button id="menuButton" class="border-2 border-ink p-2 dark:border-brand md:hidden" aria-label="Toggle menu">
-                    <i data-lucide="menu"></i>
+                <button id="menuButton" type="button" aria-label="Toggle navigation menu"
+                    aria-expanded="false"
+                    class="flex h-10 w-10 items-center justify-center border-2 border-black bg-white text-black md:hidden">
+                    <i data-lucide="menu" class="h-5 w-5"></i>
                 </button>
             </div>
         </nav>
 
-        <div id="mobileMenu" class="hidden border-t-2 border-ink p-5 font-bold dark:border-brand md:hidden">
-            <div class="flex flex-col gap-4">
-                <a href="#home">Home</a>
-                <a href="#about">About</a>
-                <a href="#products">Products</a>
-                <a href="#services">Services</a>
-                <a href="#contact">Contact</a>
+        <div id="mobileMenu"
+            class="hidden border-t-2 border-black bg-yellow-400 px-5 py-4 dark:border-yellow-400 dark:bg-neutral-950 md:hidden">
+            <div class="flex flex-col gap-4 font-bold">
+                <a href="#home" class="mobile-link">Home</a>
+                <a href="#about" class="mobile-link">About</a>
+                <a href="#products" class="mobile-link">Products</a>
+                <a href="#services" class="mobile-link">Services</a>
+                <a href="#contact" class="mobile-link">Contact</a>
             </div>
         </div>
     </header>
 
     <main>
-        <section id="home" class="mx-auto grid min-h-[75vh] max-w-5xl items-center gap-10 px-6 py-16 md:grid-cols-2">
-            <div class="reveal">
-                <p class="mb-4 font-bold uppercase tracking-widest">Your Trusted Hardware Store</p>
 
-                <h1 class="text-5xl font-black sm:text-6xl lg:text-7xl">
-                    BUILD YOUR
-                    <span class="block text-white">DREAM.</span>
-                </h1>
+        <section id="home" class="brand-yellow text-neutral-950">
+            <div class="mx-auto grid max-w-7xl items-center gap-10 px-5 py-20 md:grid-cols-2 md:py-28 lg:px-8">
 
-                <p class="my-6 text-lg">
-                    Quality tools and construction materials for every project.
-                </p>
+                <div class="hero-reveal">
+                    <p class="mb-5 inline-block border-2 border-black bg-white px-4 py-2 text-sm font-black uppercase tracking-widest">
+                        Your trusted hardware store
+                    </p>
 
-                <a href="#products" class="btn">
-                    View Products
-                    <i data-lucide="arrow-right"></i>
-                </a>
+                    <h2 class="text-5xl font-black uppercase leading-none tracking-tight sm:text-6xl lg:text-7xl">
+                        Build It.<br>
+                        Fix It.<br>
+                        <span class="text-white" style="-webkit-text-stroke: 2px black;">Make It.</span>
+                    </h2>
+
+                    <p class="mt-6 max-w-lg text-lg font-medium leading-relaxed">
+                        Find the tools, materials, and hardware supplies you need for your next project at KWKC Hardware.
+                    </p>
+
+                    <div class="mt-8 flex flex-wrap gap-4">
+                        <a href="#products"
+                            class="inline-flex items-center gap-2 border-2 border-black bg-black px-6 py-4 font-black uppercase text-yellow-400 transition hover:bg-neutral-800">
+                            Explore Products
+                            <i data-lucide="arrow-right" class="h-5 w-5"></i>
+                        </a>
+
+                        <a href="#contact"
+                            class="border-2 border-black bg-white px-6 py-4 font-black uppercase transition hover:bg-neutral-100">
+                            Contact Us
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-reveal">
+                    <div class="hard-shadow border-4 border-black bg-white p-5">
+                        <div class="flex items-center justify-between border-b-4 border-black pb-4">
+                            <span class="font-black uppercase">Hardware Essentials</span>
+                            <i data-lucide="star" class="h-6 w-6 text-black"></i>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 py-6">
+                            <div class="flex min-h-36 flex-col items-center justify-center border-2 border-black bg-yellow-100 p-4 text-center">
+                                <i data-lucide="hammer" class="h-12 w-12 text-black"></i>
+                                <p class="mt-3 font-black uppercase text-black">Hand Tools</p>
+                            </div>
+
+                            <div class="flex min-h-36 flex-col items-center justify-center border-2 border-black bg-neutral-100 p-4 text-center">
+                                <i data-lucide="wrench" class="h-12 w-12 text-black"></i>
+                                <p class="mt-3 font-black uppercase text-black">Fasteners</p>
+                            </div>
+
+                            <div class="flex min-h-36 flex-col items-center justify-center border-2 border-black bg-neutral-100 p-4 text-center">
+                                <i data-lucide="hard-hat" class="h-12 w-12 text-black"></i>
+                                <p class="mt-3 font-black uppercase text-black">Equipment</p>
+                            </div>
+
+                            <div class="flex min-h-36 flex-col items-center justify-center border-2 border-black bg-yellow-100 p-4 text-center">
+                                <i data-lucide="toolbox" class="h-12 w-12 text-black"></i>
+                                <p class="mt-3 font-black uppercase text-black">Tool Kits</p>
+                            </div>
+                        </div>
+
+                        <div class="border-2 border-black bg-yellow-400 p-4 text-center font-black uppercase text-black">
+                            Everything you need to get the job done.
+                        </div>
+                    </div>
+                </div>
+
             </div>
+        </section>
 
-            <div class="reveal flex flex-col items-center justify-center border-4 border-ink bg-yellow-300 p-10 text-center dark:border-brand dark:bg-neutral-900">
-                <i data-lucide="hammer" class="mb-5 h-28 w-28"></i>
-                <h2 class="text-3xl font-black">KWKC HARDWARE</h2>
-                <p class="mt-3 font-bold">TOOLS FOR EVERY PROJECT</p>
+        <section id="about" class="section-dark bg-neutral-100 py-20 dark:bg-neutral-900">
+            <div class="mx-auto grid max-w-7xl gap-10 px-5 md:grid-cols-2 md:items-center lg:px-8">
 
-                <div class="mt-6 flex gap-5">
-                    <i data-lucide="wrench" class="h-8 w-8"></i>
-                    <i data-lucide="hard-hat" class="h-8 w-8"></i>
-                    <i data-lucide="ruler" class="h-8 w-8"></i>
+                <div class="reveal">
+                    <p class="mb-3 font-black uppercase tracking-widest brand-text">Who We Are</p>
+
+                    <h2 class="text-4xl font-black uppercase leading-tight sm:text-5xl">
+                        Your Partner in Every Project
+                    </h2>
+
+                    <div class="mt-6 h-2 w-24 bg-yellow-400"></div>
+                </div>
+
+                <div class="reveal">
+                    <p class="text-lg leading-relaxed text-neutral-700 dark:text-neutral-300">
+                        KWKC Hardware aims to provide useful tools, reliable materials, and everyday hardware supplies for homeowners, builders, and DIY enthusiasts.
+                    </p>
+
+                    <p class="mt-5 text-lg leading-relaxed text-neutral-700 dark:text-neutral-300">
+                        Whether you are repairing something at home or working on a construction project, we want to help you find what you need.
+                    </p>
+
+                    <a href="#contact"
+                        class="mt-7 inline-flex items-center gap-2 border-2 border-neutral-900 bg-yellow-400 px-6 py-3 font-black uppercase text-neutral-950 transition hover:bg-yellow-300 dark:border-yellow-400">
+                        Get in Touch
+                        <i data-lucide="arrow-up-right" class="h-5 w-5"></i>
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="products" class="py-20">
+            <div class="mx-auto max-w-7xl px-5 lg:px-8">
+
+                <div class="reveal mb-12">
+                    <p class="mb-3 font-black uppercase tracking-widest brand-text">Our Products</p>
+                    <h2 class="text-4xl font-black uppercase sm:text-5xl">Tools for Every Task</h2>
+                    <p class="mt-4 max-w-2xl text-lg text-neutral-600 dark:text-neutral-400">
+                        Explore essential hardware supplies for your home and construction needs.
+                    </p>
+                </div>
+
+                <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+                    <article class="product-card reveal border-2 border-neutral-900 bg-white p-6 dark:border-yellow-400 dark:bg-neutral-900">
+                        <div class="flex h-40 items-center justify-center bg-yellow-100">
+                            <i data-lucide="hammer" class="h-16 w-16 text-black"></i>
+                        </div>
+                        <p class="mt-5 text-sm font-black uppercase tracking-widest brand-text">01 / Tools</p>
+                        <h3 class="mt-2 text-2xl font-black uppercase text-neutral-950 dark:text-white">Hand Tools</h3>
+                        <p class="mt-3 leading-relaxed text-neutral-600 dark:text-neutral-300">
+                            Hammers, screwdrivers, pliers, wrenches, and other tools for everyday work.
+                        </p>
+                        <a href="#contact" class="mt-5 inline-flex items-center gap-2 font-black uppercase underline decoration-2 underline-offset-4">
+                            Ask About Products
+                            <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                        </a>
+                    </article>
+
+                    <article class="product-card reveal border-2 border-neutral-900 bg-white p-6 dark:border-yellow-400 dark:bg-neutral-900">
+                        <div class="flex h-40 items-center justify-center bg-neutral-100">
+                            <i data-lucide="wrench" class="h-16 w-16 text-black"></i>
+                        </div>
+                        <p class="mt-5 text-sm font-black uppercase tracking-widest brand-text">02 / Supplies</p>
+                        <h3 class="mt-2 text-2xl font-black uppercase text-neutral-950 dark:text-white">Fasteners</h3>
+                        <p class="mt-3 leading-relaxed text-neutral-600 dark:text-neutral-300">
+                            Screws, nails, bolts, nuts, and other essential fastening materials.
+                        </p>
+                        <a href="#contact" class="mt-5 inline-flex items-center gap-2 font-black uppercase underline decoration-2 underline-offset-4">
+                            Ask About Products
+                            <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                        </a>
+                    </article>
+
+                    <article class="product-card reveal border-2 border-neutral-900 bg-white p-6 dark:border-yellow-400 dark:bg-neutral-900">
+                        <div class="flex h-40 items-center justify-center bg-yellow-100">
+                            <i data-lucide="hard-hat" class="h-16 w-16 text-black"></i>
+                        </div>
+                        <p class="mt-5 text-sm font-black uppercase tracking-widest brand-text">03 / Equipment</p>
+                        <h3 class="mt-2 text-2xl font-black uppercase text-neutral-950 dark:text-white">Safety Equipment</h3>
+                        <p class="mt-3 leading-relaxed text-neutral-600 dark:text-neutral-300">
+                            Essential protective equipment to support safer work practices.
+                        </p>
+                        <a href="#contact" class="mt-5 inline-flex items-center gap-2 font-black uppercase underline decoration-2 underline-offset-4">
+                            Ask About Products
+                            <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                        </a>
+                    </article>
+
+                    <article class="product-card reveal border-2 border-neutral-900 bg-white p-6 dark:border-yellow-400 dark:bg-neutral-900">
+                        <div class="flex h-40 items-center justify-center bg-neutral-100">
+                            <i data-lucide="toolbox" class="h-16 w-16 text-black"></i>
+                        </div>
+                        <p class="mt-5 text-sm font-black uppercase tracking-widest brand-text">04 / Storage</p>
+                        <h3 class="mt-2 text-2xl font-black uppercase text-neutral-950 dark:text-white">Tool Kits</h3>
+                        <p class="mt-3 leading-relaxed text-neutral-600 dark:text-neutral-300">
+                            Useful tool sets for household repairs and basic maintenance.
+                        </p>
+                        <a href="#contact" class="mt-5 inline-flex items-center gap-2 font-black uppercase underline decoration-2 underline-offset-4">
+                            Ask About Products
+                            <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                        </a>
+                    </article>
+
+                    <article class="product-card reveal border-2 border-neutral-900 bg-white p-6 dark:border-yellow-400 dark:bg-neutral-900">
+                        <div class="flex h-40 items-center justify-center bg-yellow-100">
+                            <i data-lucide="brick-wall" class="h-16 w-16 text-black"></i>
+                        </div>
+                        <p class="mt-5 text-sm font-black uppercase tracking-widest brand-text">05 / Building</p>
+                        <h3 class="mt-2 text-2xl font-black uppercase text-neutral-950 dark:text-white">Building Supplies</h3>
+                        <p class="mt-3 leading-relaxed text-neutral-600 dark:text-neutral-300">
+                            Common materials and supplies for construction and home improvement.
+                        </p>
+                        <a href="#contact" class="mt-5 inline-flex items-center gap-2 font-black uppercase underline decoration-2 underline-offset-4">
+                            Ask About Products
+                            <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                        </a>
+                    </article>
+
+                    <article class="product-card reveal border-2 border-neutral-900 bg-white p-6 dark:border-yellow-400 dark:bg-neutral-900">
+                        <div class="flex h-40 items-center justify-center bg-neutral-100">
+                            <i data-lucide="paintbrush" class="h-16 w-16 text-black"></i>
+                        </div>
+                        <p class="mt-5 text-sm font-black uppercase tracking-widest brand-text">06 / Finishing</p>
+                        <h3 class="mt-2 text-2xl font-black uppercase text-neutral-950 dark:text-white">Painting Supplies</h3>
+                        <p class="mt-3 leading-relaxed text-neutral-600 dark:text-neutral-300">
+                            Brushes, rollers, and painting accessories for finishing projects.
+                        </p>
+                        <a href="#contact" class="mt-5 inline-flex items-center gap-2 font-black uppercase underline decoration-2 underline-offset-4">
+                            Ask About Products
+                            <i data-lucide="arrow-right" class="h-4 w-4"></i>
+                        </a>
+                    </article>
+
                 </div>
             </div>
         </section>
 
-        <section id="about" class="bg-ink px-6 py-16 text-white dark:bg-neutral-900 dark:text-brand">
-            <div class="reveal mx-auto max-w-5xl">
-                <p class="mb-3 font-bold uppercase text-yellow-400">Who We Are</p>
-                <h2 class="mb-5 text-4xl font-black">ABOUT KWKC</h2>
-                <p class="max-w-2xl leading-relaxed">
-                    KWKC Hardware provides quality tools and building materials
-                    for homeowners, builders, and contractors.
-                </p>
-            </div>
-        </section>
+        <section id="services" class="section-dark bg-neutral-100 py-20 dark:bg-neutral-900">
+            <div class="mx-auto max-w-7xl px-5 lg:px-8">
 
-        <section id="products" class="mx-auto max-w-5xl px-6 py-16">
-            <div class="reveal mb-8">
-                <p class="font-bold uppercase">What We Offer</p>
-                <h2 class="text-4xl font-black">OUR PRODUCTS</h2>
-            </div>
-
-            <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-                <div class="card reveal">
-                    <i data-lucide="hammer" class="mb-4 h-10 w-10"></i>
-                    <h3 class="mb-2 text-xl font-black">Hand Tools</h3>
-                    <p>Tools for repairs and everyday work.</p>
-                </div>
-
-                <div class="card reveal">
-                    <i data-lucide="brick-wall" class="mb-4 h-10 w-10"></i>
-                    <h3 class="mb-2 text-xl font-black">Building Materials</h3>
-                    <p>Materials for construction projects.</p>
-                </div>
-
-                <div class="card reveal">
-                    <i data-lucide="wrench" class="mb-4 h-10 w-10"></i>
-                    <h3 class="mb-2 text-xl font-black">Hardware Supplies</h3>
-                    <p>Supplies for home and workplace needs.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="services" class="bg-ink px-6 py-16 text-white dark:bg-neutral-900 dark:text-brand">
-            <div class="mx-auto max-w-5xl">
-                <div class="reveal mb-8">
-                    <p class="font-bold uppercase text-yellow-400">How We Help</p>
-                    <h2 class="text-4xl font-black">OUR SERVICES</h2>
+                <div class="reveal mb-12 text-center">
+                    <p class="mb-3 font-black uppercase tracking-widest brand-text">What We Offer</p>
+                    <h2 class="text-4xl font-black uppercase sm:text-5xl">Our Services</h2>
+                    <p class="mx-auto mt-4 max-w-2xl text-lg text-neutral-600 dark:text-neutral-400">
+                        Helpful service for your hardware and construction supply needs.
+                    </p>
                 </div>
 
                 <div class="grid gap-6 md:grid-cols-3">
-                    <div class="card reveal">
-                        <i data-lucide="shopping-cart" class="mb-4 h-8 w-8"></i>
-                        <h3 class="mb-2 font-black">Easy Shopping</h3>
-                        <p>Find the supplies you need.</p>
-                    </div>
 
-                    <div class="card reveal">
-                        <i data-lucide="message-circle" class="mb-4 h-8 w-8"></i>
-                        <h3 class="mb-2 font-black">Customer Support</h3>
-                        <p>Get help choosing products.</p>
-                    </div>
+                    <article class="service-card reveal border-2 border-neutral-900 bg-white p-7 dark:border-yellow-400 dark:bg-neutral-950">
+                        <i data-lucide="shopping-cart" class="h-12 w-12 text-neutral-900 dark:text-yellow-400"></i>
+                        <h3 class="mt-5 text-2xl font-black uppercase">Product Assistance</h3>
+                        <p class="mt-3 leading-relaxed text-neutral-600 dark:text-neutral-300">
+                            Get help finding suitable hardware supplies for your project.
+                        </p>
+                    </article>
 
-                    <div class="card reveal">
-                        <i data-lucide="truck" class="mb-4 h-8 w-8"></i>
-                        <h3 class="mb-2 font-black">Product Availability</h3>
-                        <p>Ask about available supplies.</p>
-                    </div>
+                    <article class="service-card reveal border-2 border-neutral-900 bg-white p-7 dark:border-yellow-400 dark:bg-neutral-950">
+                        <i data-lucide="package" class="h-12 w-12 text-neutral-900 dark:text-yellow-400"></i>
+                        <h3 class="mt-5 text-2xl font-black uppercase">Supply Preparation</h3>
+                        <p class="mt-3 leading-relaxed text-neutral-600 dark:text-neutral-300">
+                            Ask about product availability and the supplies you need.
+                        </p>
+                    </article>
+
+                    <article class="service-card reveal border-2 border-neutral-900 bg-white p-7 dark:border-yellow-400 dark:bg-neutral-950">
+                        <i data-lucide="handshake" class="h-12 w-12 text-neutral-900 dark:text-yellow-400"></i>
+                        <h3 class="mt-5 text-2xl font-black uppercase">Customer Support</h3>
+                        <p class="mt-3 leading-relaxed text-neutral-600 dark:text-neutral-300">
+                            Contact us for product questions and general inquiries.
+                        </p>
+                    </article>
+
                 </div>
             </div>
         </section>
 
-        <section id="contact" class="px-6 py-16 text-center">
-            <div class="reveal mx-auto max-w-2xl">
-                <i data-lucide="mail" class="mx-auto mb-4 h-10 w-10"></i>
-                <h2 class="mb-4 text-4xl font-black">CONTACT US</h2>
-                <p class="mb-6">Have questions? Get in touch with us.</p>
+        <section id="contact" class="brand-yellow py-20 text-neutral-950">
+            <div class="mx-auto grid max-w-7xl gap-10 px-5 md:grid-cols-2 md:items-center lg:px-8">
 
-                <a href="mailto:kwkchardware@example.com" class="btn">
-                    Send Email
-                    <i data-lucide="arrow-up-right"></i>
-                </a>
+                <div class="reveal">
+                    <p class="mb-3 font-black uppercase tracking-widest">Contact Us</p>
+                    <h2 class="text-4xl font-black uppercase leading-tight sm:text-5xl">
+                        Let's Build Something Great.
+                    </h2>
+                    <p class="mt-5 max-w-lg text-lg leading-relaxed">
+                        Have questions about our products or services? Get in touch with KWKC Hardware.
+                    </p>
+                </div>
+
+                <div class="reveal border-4 border-black bg-white p-7 hard-shadow">
+                    <i data-lucide="mail" class="h-10 w-10 text-black"></i>
+                    <h3 class="mt-4 text-2xl font-black uppercase">Get in Touch</h3>
+                    <p class="mt-3 text-neutral-600">
+                        Contact us to ask about available products and hardware supplies.
+                    </p>
+
+                    <div class="mt-6 border-t-2 border-neutral-900 pt-5">
+                        <p class="font-black uppercase">Email</p>
+                        <a href="mailto:kwkchardware@example.com" class="mt-2 inline-block break-all font-bold underline">
+                            kwkchardware@example.com
+                        </a>
+                        <p class="mt-2 text-sm text-neutral-500">
+                            Replace this sample email with the store's actual contact information.
+                        </p>
+                    </div>
+
+                    <a href="mailto:kwkchardware@example.com"
+                        class="mt-6 inline-flex items-center gap-2 border-2 border-black bg-yellow-400 px-6 py-3 font-black uppercase transition hover:bg-yellow-300">
+                        Send an Email
+                        <i data-lucide="send" class="h-5 w-5"></i>
+                    </a>
+                </div>
+
             </div>
         </section>
+
     </main>
 
-    <footer class="border-t-2 border-ink bg-ink p-6 text-center text-white dark:border-brand">
-        <p class="font-black">KWKC HARDWARE</p>
-        <p class="mt-2 text-sm">&copy; 2026 KWKC Hardware. All rights reserved.</p>
+    <footer class="border-t-4 border-yellow-400 bg-neutral-950 px-5 py-8 text-white">
+        <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left">
+            <div>
+                <h2 class="text-xl font-black uppercase">KWKC Hardware</h2>
+                <p class="mt-1 text-sm text-neutral-400">Tools for every project.</p>
+            </div>
+
+            <p class="text-sm text-neutral-400">
+                © <span id="year"></span> KWKC Hardware. All rights reserved.
+            </p>
+
+            <a href="#home" class="inline-flex items-center gap-2 font-bold text-yellow-400 hover:underline">
+                Back to Top
+                <i data-lucide="arrow-up" class="h-4 w-4"></i>
+            </a>
+        </div>
     </footer>
 
     <script>
-        lucide.createIcons();
+        gsap.registerPlugin(ScrollTrigger);
 
         const themeButton = document.getElementById("themeButton");
         const menuButton = document.getElementById("menuButton");
         const mobileMenu = document.getElementById("mobileMenu");
+        const page = document.documentElement;
+
+        function renderIcons() {
+            lucide.createIcons();
+        }
+
+        renderIcons();
 
         themeButton.addEventListener("click", function () {
-            document.documentElement.classList.toggle("dark");
+            page.classList.toggle("dark");
 
-            themeButton.innerHTML = document.documentElement.classList.contains("dark")
-                ? '<i data-lucide="sun"></i>'
-                : '<i data-lucide="moon"></i>';
+            const isDark = page.classList.contains("dark");
 
-            lucide.createIcons();
+            themeButton.innerHTML = isDark
+                ? '<i data-lucide="sun" class="h-5 w-5"></i>'
+                : '<i data-lucide="moon" class="h-5 w-5"></i>';
+
+            themeButton.setAttribute(
+                "aria-label",
+                isDark ? "Switch to light mode" : "Switch to dark mode"
+            );
+
+            renderIcons();
         });
 
         menuButton.addEventListener("click", function () {
             mobileMenu.classList.toggle("hidden");
+
+            const isOpen = !mobileMenu.classList.contains("hidden");
+
+            menuButton.innerHTML = isOpen
+                ? '<i data-lucide="x" class="h-5 w-5"></i>'
+                : '<i data-lucide="menu" class="h-5 w-5"></i>';
+
+            menuButton.setAttribute("aria-expanded", String(isOpen));
+
+            renderIcons();
         });
 
-        mobileMenu.querySelectorAll("a").forEach(function (link) {
+        document.querySelectorAll(".mobile-link").forEach(function (link) {
             link.addEventListener("click", function () {
                 mobileMenu.classList.add("hidden");
+                menuButton.innerHTML =
+                    '<i data-lucide="menu" class="h-5 w-5"></i>';
+                menuButton.setAttribute("aria-expanded", "false");
+                renderIcons();
             });
         });
 
-        gsap.registerPlugin(ScrollTrigger);
-
-        gsap.to(".reveal", {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-            stagger: 0.15,
-            ease: "power2.out",
-            scrollTrigger: {
-                trigger: "main",
-                start: "top 80%",
-                toggleActions: "play none none none"
-            }
+        gsap.from(".hero-reveal", {
+            opacity: 0,
+            y: 35,
+            duration: 0.9,
+            stagger: 0.2,
+            ease: "power2.out"
         });
 
         gsap.utils.toArray(".reveal").forEach(function (element) {
-            gsap.fromTo(element,
-                { opacity: 0, y: 25 },
+            gsap.fromTo(
+                element,
+                {
+                    opacity: 0,
+                    y: 30
+                },
                 {
                     opacity: 1,
                     y: 0,
-                    duration: 0.7,
+                    duration: 0.8,
                     ease: "power2.out",
                     scrollTrigger: {
                         trigger: element,
@@ -269,6 +527,13 @@
                     }
                 }
             );
+        });
+
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        window.addEventListener("load", function () {
+            renderIcons();
+            ScrollTrigger.refresh();
         });
     </script>
 
