@@ -7,179 +7,269 @@
     <title>KWKC Hardware</title>
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <style>
+    <style type="text/tailwindcss">
+        @custom-variant dark (&:where(.dark, .dark *));
+
+        @theme {
+            --color-brand: #facc15;
+            --color-ink: #111111;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            background: #facc15;
-            color: #111;
-            transition: 0.3s;
+            @apply bg-brand text-ink transition-colors duration-300;
         }
 
-        .dark {
-            background: #111;
-            color: #facc15;
-        }
-
-        .dark .card {
-            background: #222;
-            color: #facc15;
-            border-color: #facc15;
-        }
-
-        .dark header,
-        .dark footer {
-            border-color: #facc15;
-        }
-
-        .dark .section-dark {
-            background: #222;
-        }
-
-        .dark .button {
-            background: #facc15;
-            color: #111;
+        .dark body {
+            @apply bg-ink text-brand;
         }
 
         .card {
-            border: 2px solid #111;
-            background: white;
-            color: #111;
-            padding: 24px;
+            @apply border-2 border-ink bg-white p-6 text-ink;
+            box-shadow: 5px 5px 0 #111111;
         }
 
-        .button {
-            display: inline-block;
-            background: #111;
-            color: #facc15;
-            padding: 12px 20px;
-            font-weight: bold;
+        .dark .card {
+            @apply border-brand bg-neutral-900 text-brand;
+            box-shadow: 5px 5px 0 #facc15;
+        }
+
+        .btn {
+            @apply inline-flex items-center gap-2 border-2 border-ink bg-ink px-5 py-3 font-bold text-brand;
+        }
+
+        .dark .btn {
+            @apply border-brand bg-brand text-ink;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(25px);
         }
     </style>
 </head>
 
-<body id="page">
+<body class="font-sans">
 
-    <header class="border-b-2 border-black p-5">
-        <nav class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4">
-            <h1 class="text-2xl font-black">KWKC.</h1>
+    <header class="sticky top-0 z-50 border-b-2 border-ink bg-brand dark:border-brand dark:bg-ink">
+        <nav class="mx-auto flex max-w-5xl items-center justify-between p-5">
+            <a href="#home" class="text-2xl font-black">KWKC<span class="text-white">.</span></a>
 
-            <div class="flex flex-wrap items-center gap-4 font-bold">
+            <div class="hidden items-center gap-5 font-bold md:flex">
                 <a href="#home">Home</a>
                 <a href="#about">About</a>
                 <a href="#products">Products</a>
                 <a href="#services">Services</a>
                 <a href="#contact">Contact</a>
+            </div>
 
-                <button id="themeButton" aria-label="Toggle dark mode">
+            <div class="flex items-center gap-3">
+                <button id="themeButton" class="border-2 border-ink p-2 dark:border-brand" aria-label="Toggle dark mode">
                     <i data-lucide="moon"></i>
+                </button>
+
+                <button id="menuButton" class="border-2 border-ink p-2 dark:border-brand md:hidden" aria-label="Toggle menu">
+                    <i data-lucide="menu"></i>
                 </button>
             </div>
         </nav>
+
+        <div id="mobileMenu" class="hidden border-t-2 border-ink p-5 font-bold dark:border-brand md:hidden">
+            <div class="flex flex-col gap-4">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#products">Products</a>
+                <a href="#services">Services</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
     </header>
 
     <main>
-        <section id="home" class="mx-auto flex min-h-80 max-w-5xl flex-col items-center justify-center px-6 py-16 text-center">
-            <i data-lucide="hammer" class="mb-4 h-16 w-16"></i>
+        <section id="home" class="mx-auto grid min-h-[75vh] max-w-5xl items-center gap-10 px-6 py-16 md:grid-cols-2">
+            <div class="reveal">
+                <p class="mb-4 font-bold uppercase tracking-widest">Your Trusted Hardware Store</p>
 
-            <h2 class="text-4xl font-black sm:text-6xl">
-                BUILD YOUR DREAM.
-            </h2>
+                <h1 class="text-5xl font-black sm:text-6xl lg:text-7xl">
+                    BUILD YOUR
+                    <span class="block text-white">DREAM.</span>
+                </h1>
 
-            <p class="my-5 text-lg">
-                Quality tools and materials for every project.
-            </p>
+                <p class="my-6 text-lg">
+                    Quality tools and construction materials for every project.
+                </p>
 
-            <a href="#products" class="button">View Products</a>
-        </section>
+                <a href="#products" class="btn">
+                    View Products
+                    <i data-lucide="arrow-right"></i>
+                </a>
+            </div>
 
-        <section id="about" class="section-dark bg-black px-6 py-12 text-center text-white">
-            <h2 class="mb-4 text-3xl font-black">ABOUT US</h2>
+            <div class="reveal flex flex-col items-center justify-center border-4 border-ink bg-yellow-300 p-10 text-center dark:border-brand dark:bg-neutral-900">
+                <i data-lucide="hammer" class="mb-5 h-28 w-28"></i>
+                <h2 class="text-3xl font-black">KWKC HARDWARE</h2>
+                <p class="mt-3 font-bold">TOOLS FOR EVERY PROJECT</p>
 
-            <p class="mx-auto max-w-xl">
-                KWKC Hardware provides quality tools and building materials
-                for homeowners, builders, and contractors.
-            </p>
-        </section>
-
-        <section id="products" class="mx-auto max-w-5xl px-6 py-12">
-            <h2 class="mb-8 text-center text-3xl font-black">OUR PRODUCTS</h2>
-
-            <div class="grid gap-5 sm:grid-cols-2 md:grid-cols-3">
-                <div class="card text-center">
-                    <i data-lucide="hammer" class="mx-auto mb-3 h-10 w-10"></i>
-                    <h3 class="text-xl font-black">Hand Tools</h3>
-                    <p class="mt-2">Tools for everyday repairs.</p>
-                </div>
-
-                <div class="card text-center">
-                    <i data-lucide="brick-wall" class="mx-auto mb-3 h-10 w-10"></i>
-                    <h3 class="text-xl font-black">Building Materials</h3>
-                    <p class="mt-2">Materials for construction.</p>
-                </div>
-
-                <div class="card text-center">
-                    <i data-lucide="wrench" class="mx-auto mb-3 h-10 w-10"></i>
-                    <h3 class="text-xl font-black">Hardware Supplies</h3>
-                    <p class="mt-2">Supplies for home projects.</p>
+                <div class="mt-6 flex gap-5">
+                    <i data-lucide="wrench" class="h-8 w-8"></i>
+                    <i data-lucide="hard-hat" class="h-8 w-8"></i>
+                    <i data-lucide="ruler" class="h-8 w-8"></i>
                 </div>
             </div>
         </section>
 
-        <section id="services" class="section-dark bg-black px-6 py-12 text-center text-white">
-            <h2 class="mb-8 text-3xl font-black">OUR SERVICES</h2>
+        <section id="about" class="bg-ink px-6 py-16 text-white dark:bg-neutral-900 dark:text-brand">
+            <div class="reveal mx-auto max-w-5xl">
+                <p class="mb-3 font-bold uppercase text-yellow-400">Who We Are</p>
+                <h2 class="mb-5 text-4xl font-black">ABOUT KWKC</h2>
+                <p class="max-w-2xl leading-relaxed">
+                    KWKC Hardware provides quality tools and building materials
+                    for homeowners, builders, and contractors.
+                </p>
+            </div>
+        </section>
 
-            <div class="mx-auto grid max-w-4xl gap-6 sm:grid-cols-3">
-                <div>
-                    <i data-lucide="shopping-cart" class="mx-auto mb-3 h-8 w-8 text-yellow-400"></i>
-                    <h3 class="font-bold">Easy Shopping</h3>
+        <section id="products" class="mx-auto max-w-5xl px-6 py-16">
+            <div class="reveal mb-8">
+                <p class="font-bold uppercase">What We Offer</p>
+                <h2 class="text-4xl font-black">OUR PRODUCTS</h2>
+            </div>
+
+            <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+                <div class="card reveal">
+                    <i data-lucide="hammer" class="mb-4 h-10 w-10"></i>
+                    <h3 class="mb-2 text-xl font-black">Hand Tools</h3>
+                    <p>Tools for repairs and everyday work.</p>
                 </div>
 
-                <div>
-                    <i data-lucide="message-circle" class="mx-auto mb-3 h-8 w-8 text-yellow-400"></i>
-                    <h3 class="font-bold">Customer Support</h3>
+                <div class="card reveal">
+                    <i data-lucide="brick-wall" class="mb-4 h-10 w-10"></i>
+                    <h3 class="mb-2 text-xl font-black">Building Materials</h3>
+                    <p>Materials for construction projects.</p>
                 </div>
 
-                <div>
-                    <i data-lucide="truck" class="mx-auto mb-3 h-8 w-8 text-yellow-400"></i>
-                    <h3 class="font-bold">Product Availability</h3>
+                <div class="card reveal">
+                    <i data-lucide="wrench" class="mb-4 h-10 w-10"></i>
+                    <h3 class="mb-2 text-xl font-black">Hardware Supplies</h3>
+                    <p>Supplies for home and workplace needs.</p>
                 </div>
             </div>
         </section>
 
-        <section id="contact" class="px-6 py-12 text-center">
-            <i data-lucide="mail" class="mx-auto mb-4 h-10 w-10"></i>
+        <section id="services" class="bg-ink px-6 py-16 text-white dark:bg-neutral-900 dark:text-brand">
+            <div class="mx-auto max-w-5xl">
+                <div class="reveal mb-8">
+                    <p class="font-bold uppercase text-yellow-400">How We Help</p>
+                    <h2 class="text-4xl font-black">OUR SERVICES</h2>
+                </div>
 
-            <h2 class="mb-3 text-3xl font-black">CONTACT US</h2>
+                <div class="grid gap-6 md:grid-cols-3">
+                    <div class="card reveal">
+                        <i data-lucide="shopping-cart" class="mb-4 h-8 w-8"></i>
+                        <h3 class="mb-2 font-black">Easy Shopping</h3>
+                        <p>Find the supplies you need.</p>
+                    </div>
 
-            <p class="mb-5">Have questions? Send us an email.</p>
+                    <div class="card reveal">
+                        <i data-lucide="message-circle" class="mb-4 h-8 w-8"></i>
+                        <h3 class="mb-2 font-black">Customer Support</h3>
+                        <p>Get help choosing products.</p>
+                    </div>
 
-            <a href="mailto:kwkchardware@example.com" class="button">
-                Send Email
-            </a>
+                    <div class="card reveal">
+                        <i data-lucide="truck" class="mb-4 h-8 w-8"></i>
+                        <h3 class="mb-2 font-black">Product Availability</h3>
+                        <p>Ask about available supplies.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="px-6 py-16 text-center">
+            <div class="reveal mx-auto max-w-2xl">
+                <i data-lucide="mail" class="mx-auto mb-4 h-10 w-10"></i>
+                <h2 class="mb-4 text-4xl font-black">CONTACT US</h2>
+                <p class="mb-6">Have questions? Get in touch with us.</p>
+
+                <a href="mailto:kwkchardware@example.com" class="btn">
+                    Send Email
+                    <i data-lucide="arrow-up-right"></i>
+                </a>
+            </div>
         </section>
     </main>
 
-    <footer class="border-t-2 border-black bg-black p-5 text-center text-white">
-        <p class="font-bold">KWKC HARDWARE</p>
-        <p class="mt-2 text-sm">&copy; 2026 KWKC Hardware</p>
+    <footer class="border-t-2 border-ink bg-ink p-6 text-center text-white dark:border-brand">
+        <p class="font-black">KWKC HARDWARE</p>
+        <p class="mt-2 text-sm">&copy; 2026 KWKC Hardware. All rights reserved.</p>
     </footer>
 
     <script>
-        const page = document.getElementById("page");
+        lucide.createIcons();
+
         const themeButton = document.getElementById("themeButton");
+        const menuButton = document.getElementById("menuButton");
+        const mobileMenu = document.getElementById("mobileMenu");
 
         themeButton.addEventListener("click", function () {
-            page.classList.toggle("dark");
+            document.documentElement.classList.toggle("dark");
 
-            themeButton.innerHTML = page.classList.contains("dark")
+            themeButton.innerHTML = document.documentElement.classList.contains("dark")
                 ? '<i data-lucide="sun"></i>'
                 : '<i data-lucide="moon"></i>';
 
             lucide.createIcons();
         });
 
-        lucide.createIcons();
+        menuButton.addEventListener("click", function () {
+            mobileMenu.classList.toggle("hidden");
+        });
+
+        mobileMenu.querySelectorAll("a").forEach(function (link) {
+            link.addEventListener("click", function () {
+                mobileMenu.classList.add("hidden");
+            });
+        });
+
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.to(".reveal", {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            stagger: 0.15,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: "main",
+                start: "top 80%",
+                toggleActions: "play none none none"
+            }
+        });
+
+        gsap.utils.toArray(".reveal").forEach(function (element) {
+            gsap.fromTo(element,
+                { opacity: 0, y: 25 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.7,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: element,
+                        start: "top 90%",
+                        toggleActions: "play none none none"
+                    }
+                }
+            );
+        });
     </script>
 
 </body>
