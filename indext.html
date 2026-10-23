@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KWKC Hardware</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        body {
+            background: #facc15;
+            color: #111;
+            transition: 0.3s;
+        }
+
+        .dark {
+            background: #111;
+            color: #facc15;
+        }
+
+        .dark .card {
+            background: #222;
+            color: #facc15;
+            border-color: #facc15;
+        }
+
+        .dark header,
+        .dark footer {
+            border-color: #facc15;
+        }
+
+        .dark .section-dark {
+            background: #222;
+        }
+
+        .dark .button {
+            background: #facc15;
+            color: #111;
+        }
+
+        .card {
+            border: 2px solid #111;
+            background: white;
+            color: #111;
+            padding: 24px;
+        }
+
+        .button {
+            display: inline-block;
+            background: #111;
+            color: #facc15;
+            padding: 12px 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body id="page">
+
+    <header class="border-b-2 border-black p-5">
+        <nav class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-4">
+            <h1 class="text-2xl font-black">KWKC.</h1>
+
+            <div class="flex flex-wrap items-center gap-4 font-bold">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#products">Products</a>
+                <a href="#services">Services</a>
+                <a href="#contact">Contact</a>
+
+                <button id="themeButton" aria-label="Toggle dark mode">
+                    <i data-lucide="moon"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="mx-auto flex min-h-80 max-w-5xl flex-col items-center justify-center px-6 py-16 text-center">
+            <i data-lucide="hammer" class="mb-4 h-16 w-16"></i>
+
+            <h2 class="text-4xl font-black sm:text-6xl">
+                BUILD YOUR DREAM.
+            </h2>
+
+            <p class="my-5 text-lg">
+                Quality tools and materials for every project.
+            </p>
+
+            <a href="#products" class="button">View Products</a>
+        </section>
+
+        <section id="about" class="section-dark bg-black px-6 py-12 text-center text-white">
+            <h2 class="mb-4 text-3xl font-black">ABOUT US</h2>
+
+            <p class="mx-auto max-w-xl">
+                KWKC Hardware provides quality tools and building materials
+                for homeowners, builders, and contractors.
+            </p>
+        </section>
+
+        <section id="products" class="mx-auto max-w-5xl px-6 py-12">
+            <h2 class="mb-8 text-center text-3xl font-black">OUR PRODUCTS</h2>
+
+            <div class="grid gap-5 sm:grid-cols-2 md:grid-cols-3">
+                <div class="card text-center">
+                    <i data-lucide="hammer" class="mx-auto mb-3 h-10 w-10"></i>
+                    <h3 class="text-xl font-black">Hand Tools</h3>
+                    <p class="mt-2">Tools for everyday repairs.</p>
+                </div>
+
+                <div class="card text-center">
+                    <i data-lucide="brick-wall" class="mx-auto mb-3 h-10 w-10"></i>
+                    <h3 class="text-xl font-black">Building Materials</h3>
+                    <p class="mt-2">Materials for construction.</p>
+                </div>
+
+                <div class="card text-center">
+                    <i data-lucide="wrench" class="mx-auto mb-3 h-10 w-10"></i>
+                    <h3 class="text-xl font-black">Hardware Supplies</h3>
+                    <p class="mt-2">Supplies for home projects.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="section-dark bg-black px-6 py-12 text-center text-white">
+            <h2 class="mb-8 text-3xl font-black">OUR SERVICES</h2>
+
+            <div class="mx-auto grid max-w-4xl gap-6 sm:grid-cols-3">
+                <div>
+                    <i data-lucide="shopping-cart" class="mx-auto mb-3 h-8 w-8 text-yellow-400"></i>
+                    <h3 class="font-bold">Easy Shopping</h3>
+                </div>
+
+                <div>
+                    <i data-lucide="message-circle" class="mx-auto mb-3 h-8 w-8 text-yellow-400"></i>
+                    <h3 class="font-bold">Customer Support</h3>
+                </div>
+
+                <div>
+                    <i data-lucide="truck" class="mx-auto mb-3 h-8 w-8 text-yellow-400"></i>
+                    <h3 class="font-bold">Product Availability</h3>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="px-6 py-12 text-center">
+            <i data-lucide="mail" class="mx-auto mb-4 h-10 w-10"></i>
+
+            <h2 class="mb-3 text-3xl font-black">CONTACT US</h2>
+
+            <p class="mb-5">Have questions? Send us an email.</p>
+
+            <a href="mailto:kwkchardware@example.com" class="button">
+                Send Email
+            </a>
+        </section>
+    </main>
+
+    <footer class="border-t-2 border-black bg-black p-5 text-center text-white">
+        <p class="font-bold">KWKC HARDWARE</p>
+        <p class="mt-2 text-sm">&copy; 2026 KWKC Hardware</p>
+    </footer>
+
+    <script>
+        const page = document.getElementById("page");
+        const themeButton = document.getElementById("themeButton");
+
+        themeButton.addEventListener("click", function () {
+            page.classList.toggle("dark");
+
+            themeButton.innerHTML = page.classList.contains("dark")
+                ? '<i data-lucide="sun"></i>'
+                : '<i data-lucide="moon"></i>';
+
+            lucide.createIcons();
+        });
+
+        lucide.createIcons();
+    </script>
+
+</body>
+</html>
